@@ -8,16 +8,18 @@ const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
+const port = process.env.PORT || 4000;
 
 const db = knex({
-  // connect to your own database here:
-  client: 'pg',
-  connection: {
-    host : '127.0.0.1',
-    user : 'aneagoie',
-    password : '',
-    database : 'smart-brain'
-  }
+    client: 'pg',
+    connection: {
+//         connectionString: "postgres://zfupniia:U1xMSJ0AOp0KWjmYBbpiZibcSNarCvU-@trumpet.db.elephantsql.com/zfupniia",
+//         ssl: true
+        host:process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password:process.env.DB_PASSWORD,
+        database:process.env.DB_NAME
+    }
 });
 
 const app = express();
@@ -32,6 +34,6 @@ app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db)})
 app.put('/image', (req, res) => { image.handleImage(req, res, db)})
 app.post('/imageurl', (req, res) => { image.handleApiCall(req, res)})
 
-app.listen(3000, ()=> {
-  console.log('app is running on port 3000');
-})
+app.listen(port, () => {
+    console.log(`app is runnin on port ${port}`);
+});
